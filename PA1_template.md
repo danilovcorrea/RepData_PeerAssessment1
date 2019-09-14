@@ -11,7 +11,8 @@ output:
 
 
 #### download the dataset
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 download.file(fileUrl,destfile="./Dataset.zip")
@@ -19,7 +20,8 @@ download.file(fileUrl,destfile="./Dataset.zip")
 
 
 #### unzip the dataset 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 unzip(zipfile="./Dataset.zip")
 ```
@@ -27,7 +29,8 @@ unzip(zipfile="./Dataset.zip")
 
 #### read dataset
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 wd <- getwd()
 activity_dataset <- read.csv(file = paste(wd,"/activity.csv", sep = ""))
@@ -39,14 +42,16 @@ activity_dataset <- read.csv(file = paste(wd,"/activity.csv", sep = ""))
 
 ### 1. Calculate the total number of steps taken per day
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 sum_steps_by_day <- tapply(X = activity_dataset$steps, INDEX = activity_dataset$date, FUN = sum)
 ```
 
 ### 2. Make a histogram of the total number of steps taken each day
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 hist(sum_steps_by_day, breaks = 16,
      xlab = "Steps",
@@ -58,20 +63,32 @@ hist(sum_steps_by_day, breaks = 16,
 )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+
 ### 3. Calculate and report the mean and median of the total number of steps taken per day
 
 
 #### Mean:
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 mean(sum_steps_by_day, na.rm = T)
 ```
 
+```
+## [1] 10766.19
+```
+
 
 #### Median:
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 median(sum_steps_by_day, na.rm = T)
+```
+
+```
+## [1] 10765
 ```
 
 
@@ -80,7 +97,8 @@ median(sum_steps_by_day, na.rm = T)
 
 ### 1. Make a time series plot (i.e. type = "l"\color{red}{\verb|type = "l"|}type="l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 mean_steps_by_interval <- tapply(X = activity_dataset$steps, INDEX = activity_dataset$interval, FUN = mean, na.rm = T)
 
@@ -95,12 +113,19 @@ plot(mean_steps_by_interval, type="l",
      )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
 
 ### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 names(which.max(mean_steps_by_interval))
+```
+
+```
+## [1] "835"
 ```
 
 
@@ -109,15 +134,21 @@ names(which.max(mean_steps_by_interval))
 
 ### 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NA\color{red}{\verb|NA|}NAs)
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 sum(is.na(activity_dataset$steps))
+```
+
+```
+## [1] 2304
 ```
 
 
 ### 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 
 ### Create a new object to fill NA with
@@ -133,7 +164,8 @@ fill_na_activity_dataset$steps[na] <- mean_steps_by_interval[as.character(fill_n
 
 ### 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 new_sum_steps_by_day <- tapply(fill_na_activity_dataset$steps, fill_na_activity_dataset$date, sum, na.rm=TRUE)
 ```
@@ -141,7 +173,8 @@ new_sum_steps_by_day <- tapply(fill_na_activity_dataset$steps, fill_na_activity_
 
 ### 4. Make a histogram of the total number of steps taken each day.
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 hist(new_sum_steps_by_day, breaks = 20,
      xlab = "Steps",
@@ -154,21 +187,33 @@ hist(new_sum_steps_by_day, breaks = 20,
 )
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
 
 ### 4.1. Calculate and report the mean and median total number of steps taken per day.
 
 
 #### Mean:
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 mean(new_sum_steps_by_day, na.rm = T)
 ```
 
+```
+## [1] 10766.19
+```
+
 
 #### Median:
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 median(new_sum_steps_by_day, na.rm = T)
+```
+
+```
+## [1] 10766.19
 ```
 
 
@@ -179,18 +224,34 @@ median(new_sum_steps_by_day, na.rm = T)
 
 
 #### Mean:
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 mean(sum_steps_by_day, na.rm = T) == mean(new_sum_steps_by_day, na.rm = T)
+```
+
+```
+## [1] TRUE
+```
+
+```r
 ##[1] TRUE
 ### The mean did not differ.
 ```
 
 
 #### Median:
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 median(sum_steps_by_day, na.rm = T)/median(new_sum_steps_by_day, na.rm = T)
+```
+
+```
+## [1] 0.9998896
+```
+
+```r
 ##[1] 0.9998896
 ### the median differed 0.01104%.
 ```
@@ -208,7 +269,8 @@ median(sum_steps_by_day, na.rm = T)/median(new_sum_steps_by_day, na.rm = T)
 
 ### 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 ### Function to indicate whether a given date is a weekday or weekend day
 func <- function(x) {
@@ -227,7 +289,8 @@ fill_na_activity_dataset$day_type <- as.factor(weekday)
 
 ### 2. Make a panel plot containing a time series plot (i.e. type = "l"\color{red}{\verb|type = "l"|}type="l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
 
-```{r}
+
+```r
 knitr::opts_chunk$set(echo = TRUE)
 ### average number of steps taken averaged across all days
 mean_steps_by_interval_by_day_type <- aggregate(steps ~ day_type+interval, data=fill_na_activity_dataset, FUN=mean)
@@ -264,4 +327,6 @@ plot(mean_steps_by_interval_by_weekday$weekday$steps, type="l",
 
 title("Average daily steps by intervals and day type", outer=TRUE, line = -1)
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
